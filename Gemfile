@@ -1,5 +1,5 @@
 source "http://rubygems.org"
 
-gem "rails", "3.0.5"
+gem "rails", ">= 3"
 gem "mysql2"
-gem "rspec", "2.5.0"
+gem "rspec", ">= 2.5"
