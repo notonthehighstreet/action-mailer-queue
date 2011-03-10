@@ -12,8 +12,8 @@ module ActionMailerQueue
       order("priority asc, last_attempt_at asc")
     }
     
-    scope :with_error, where("attempts > ?", 0)
-    scope :without_error, where("attempts = ?", 0)
+    scope :with_error, lambda { where("attempts > ?", 0) }
+    scope :without_error, lambda { where("attempts = ?", 0) }
     
     class MailAlreadySent < StandardError; end
     
