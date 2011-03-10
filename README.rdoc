@@ -1,0 +1,23 @@
+= ActionMailerQueue
+
+This plugin was originally based on action-mailer-queue by Andrew Beam.
+It has been rewritten for Rails 3.
+
+== Usage
+
+    class MyMailer < ActionMailer::Base
+      # Tell the mailer to deliver with active record
+      self.delivery_method = :active_record
+      
+      def test
+        mail(:to => "test@test.com", :from => "test@test.com")
+      end
+    end
+    
+    # Creates a records in the emails table (see spec/schema.rb for structure).
+    MyMailer.test.deliver
+    
+== Contributors
+
+* Jonathan Viney
+* Andrew Beam - original author

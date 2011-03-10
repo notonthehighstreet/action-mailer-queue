@@ -1,0 +1,11 @@
+sqlite3:
+  adapter: sqlite3
+  database: action_mailer_queue.sqlite3
+
+mysql:
+  adapter: mysql2
+  hostname: localhost
+  username: root
+  password:
+  database: rails_plugin_test
+  socket: /tmp/mysql.sock
