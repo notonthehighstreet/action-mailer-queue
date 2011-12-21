@@ -1,4 +1,8 @@
+require "mail"
 require "mail/active_record"
+
+require "action_mailer"
+
 require "action_mailer_queue/mailer"
 require "action_mailer_queue/store"
 
