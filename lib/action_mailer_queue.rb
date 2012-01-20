@@ -16,7 +16,7 @@ ActionMailer::Base.class_eval do
   def self.queue
     settings = active_record_settings
     @queue ||= Class.new(ActionMailerQueue::Store) do
-      set_table_name settings[:table_name]
+      self.table_name = settings[:table_name]
     end
   end
 end
