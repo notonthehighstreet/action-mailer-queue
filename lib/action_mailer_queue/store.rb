@@ -1,5 +1,7 @@
 module ActionMailerQueue
   class Store < ActiveRecord::Base
+    self.abstract_class = true
+    
     scope :for_send, lambda { where("sent = ?", false) }
     scope :already_sent, lambda { where("sent = ?", true) }
     
