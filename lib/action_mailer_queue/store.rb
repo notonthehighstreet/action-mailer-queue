@@ -2,24 +2,35 @@ module ActionMailerQueue
   class Store < ActiveRecord::Base
     self.abstract_class = true
     
-    scope :for_send, lambda { where("sent = ?", false) }
-    scope :already_sent, lambda { where("sent = ?", true) }
-    
-    scope :with_processing_rules, lambda {
-      where(
-        "attempts < ? AND (last_attempt_at < ? OR last_attempt_at IS NULL)",
-        active_record_settings[:max_attempts_in_process],
-        Time.now - active_record_settings[:delay_between_attempts_in_process].minutes).
-      limit(active_record_settings[:limit_for_processing]).
-      order("priority asc, last_attempt_at asc")
-    }
-    
-    scope :with_error, lambda { where("attempts > ?", 0) }
-    scope :without_error, lambda { where("attempts = ?", 0) }
-    
     class MailAlreadySent < StandardError; end
     
     class << self
+      def for_send
+        where(sent: false)
+      end
+
+      def already_sent
+        where(sent: true)
+      end
+
+      def with_processing_rules
+        where(
+          "attempts < ? AND (last_attempt_at < ? OR last_attempt_at IS NULL)",
+          active_record_settings[:max_attempts_in_process],
+          Time.now - active_record_settings[:delay_between_attempts_in_process].minutes
+        ).
+        limit(active_record_settings[:limit_for_processing]).
+        order("priority asc, last_attempt_at asc")
+      end
+
+      def with_error
+        where("attempts > ?", 0)
+      end
+
+      def without_error
+        where("attempts = ?", 0)
+      end
+
       def process!(options = {})
         records_for_processing(options).each { |q| q.deliver! }
       end
