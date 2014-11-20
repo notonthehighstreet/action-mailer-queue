@@ -25,7 +25,12 @@ module ActionMailerQueue
       end
       
       def records_for_processing(options = {})
-        for_send.with_processing_rules.all(options)
+        records = for_send.
+          with_processing_rules.
+          where(options[:conditions]).
+          order(options[:order])
+        records = records.limit(options[:limit]) if options[:limit]
+        records.to_a
       end
     
       def active_record_settings
